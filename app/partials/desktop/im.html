@@ -79,9 +79,9 @@
       </div>
     </div>
 
-    <div class="im_history_col_wrap noselect" ng-controller="AppImHistoryController">
+    <div class="im_history_col_wrap noselect" ng-controller="AppImHistoryController" ng-class="{im_history_loaded: state.loaded}">
 
-      <div ng-show="state.notSelected" ng-switch="isEmpty.contacts &amp;&amp; isEmpty.dialogs">
+      <div class="im_history_not_selected_wrap" ng-switch="isEmpty.contacts &amp;&amp; isEmpty.dialogs">
         <div ng-switch-when="true" class="im_history_no_dialogs_wrap">
           <h3 class="im_dialogs_empty_header" my-i18n="im_get_started"></h3>
           <p class="im_dialogs_empty_lead" my-i18n="im_welcome_text"></p>
@@ -90,11 +90,11 @@
         <div ng-switch-default class="im_history_not_selected" my-vertical-position="0.35" padding="true" my-i18n="im_select_a_chat"></div>
       </div>
 
-      <div ng-show="!state.notSelected &amp;&amp; !state.loaded" class="im_history_loading" my-vertical-position="0.35" padding="true">
-        <div my-arc-progress stroke="5" width="50"></div>
+      <div class="im_history_selected_loading_wrap im_history_loading" my-vertical-position="0.4" padding="true">
+        <div my-arc-progress stroke="4" width="32"></div>
       </div>
 
-      <div ng-show="!state.notSelected &amp;&amp; state.loaded">
+      <div class="im_history_selected_wrap">
         <div my-history class="im_history_col">
 
           <div class="im_history_wrap nano">
@@ -106,7 +106,7 @@
 
                     <div class="im_history_empty_wrap" ng-show="state.empty" ng-switch="state.mayBeHasMore">
                       <div ng-switch-when="true" class="im_history_loading" my-vertical-position="0.3" padding="true">
-                        <div my-arc-progress stroke="5" width="50"></div>
+                        <div my-arc-progress stroke="4" width="32"></div>
                       </div>
                       <div ng-switch-default class="im_history_empty" my-vertical-position="0.25" padding="true" my-i18n="im_no_messages"></div>
                     </div>
@@ -171,7 +171,7 @@
               </div>
             </div>
 
-            <div class="im_send_panel_wrap" ng-show="!historyState.actions()">
+            <div class="im_send_panel_wrap noselect" ng-show="!historyState.actions()">
 
               <div class="im_send_form_wrap1">
 
@@ -196,9 +196,11 @@
                       <div class="im_message_reply_wrap" my-forwarded-messages="draftMessage.fwdMessages"></div>
                     </div>
 
-                    <div class="im_send_field_wrap" ng-class="historyState.replyKeyboard._ == 'replyKeyboardMarkup' ? 'im_send_field_wrap_2ndbtn' : ''">
+                    <div class="im_send_field_wrap hasselect" ng-class="historyState.replyKeyboard._ == 'replyKeyboardMarkup' ? 'im_send_field_wrap_2ndbtn' : ''">
                       <a class="composer_emoji_insert_btn"><i class="icon icon-emoji"></i></a>
-                      <div class="composer_progress_icon" my-arc-progress width="22" stroke="2.5"></div>
+                      <div class="composer_progress_icon_wrap">
+                        <div class="composer_progress_icon" my-arc-progress width="22" stroke="2.5"></div>
+                      </div>
                       <a class="composer_command_btn" ng-show="!historyState.replyKeyboard && commands.list.length > 0 && (!draftMessage.text.length || draftMessage.text[0] == '/')" ng-mousedown="toggleSlash($event)" ng-class="draftMessage.text[0] == '/' ? 'active' : ''"><i class="icon icon-slash"></i></a>
                       <a class="composer_keyboard_btn" ng-show="historyState.replyKeyboard._ == 'replyKeyboardMarkup'" ng-mousedown="replyKeyboardToggle($event)" ng-class="!historyState.replyKeyboard.pFlags.hidden ? 'active' : ''"><i class="icon icon-keyboard"></i></a>
 
@@ -207,7 +209,7 @@
                     </div>
 
                     <div class="im_send_buttons_wrap clearfix">
-                      <button type="submit" class="btn btn-md im_submit" my-i18n="im_submit_message"></button>
+                      <button type="submit" class="btn btn-md im_submit nocopy" my-i18n="im_submit_message"></button>
 
                       <div class="im_attach pull-left">
                         <input type="file" class="im_attach_input" size="28" multiple="multiple" title="{{'im_attach_file_title' | i18n}}" />
@@ -245,3 +247,5 @@
 </div>
 
 <div class="footer_wrap footer_empty"></div>
+
+<toaster-container toaster-options="{'position-class': 'toast-bottom-center'}"></toaster-container>
